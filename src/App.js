@@ -6,15 +6,11 @@ function App() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSearch = () => {
-    // Poništimo prethodnu poruku o grešci
     setErrorMessage("");
-
-    // Ako je searchTerm prazan, ne radimo ništa
     if (!searchTerm) {
       return;
     }
 
-    // Dohvati podatke s iTunes search API-a
     fetch(
       `https://itunes.apple.com/search?term=${encodeURIComponent(
         searchTerm
@@ -22,22 +18,19 @@ function App() {
     )
       .then((response) => response.json())
       .then((data) => {
-        // Provjerimo je li rezultat prazan
         if (data.results.length === 0) {
           setErrorMessage("Tražena pjesma ne postoji na iTunes listi");
         } else {
-          // Ako ima rezultata, postavimo ih u state
           setSearchResults(data.results);
         }
       })
       .catch((error) => {
-        console.error("Greška prilikom dohvaćanja podataka:", error);
-        setErrorMessage("Došlo je do greške prilikom dohvaćanja podataka");
+        console.error("Greška:", error);
+        setErrorMessage("Dohvacanje greska ne postoji na iTunes listi");
       });
   };
 
   const handleInputChange = (event) => {
-    // Ažuriramo searchTerm kad god se unese nešto u input field
     setSearchTerm(event.target.value);
   };
 
@@ -59,7 +52,7 @@ function App() {
       </button>
       {errorMessage && <p>{errorMessage}</p>}
       {searchResults.length > 0 && (
-        <table className="table-auto">
+        <table className=" table-auto">
           <thead>
             <tr>
               <th className="font-bold text-emerald-900">Ime pjesme</th>
